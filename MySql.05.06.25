@@ -1,65 +1,312 @@
-#Listar as bases existentes:
-Show databases;
 
+Setting environment for using XAMPP for Windows.
+Micro11@MICRO11 c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
 
-#Criar base de dados:
-Create database revisao;
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-#Conectar base de dados:
-use revisao;
+MariaDB [(none)]> Create database empresa;
+ERROR 1007 (HY000): Can't create database 'empresa'; database exists
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| empresa            |
+| escola             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| prova              |
+| test               |
+| thiago             |
++--------------------+
+9 rows in set (0.029 sec)
 
+MariaDB [(none)]> use empresa;
+Database changed
+MariaDB [empresa]> sow tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'sow tables' at line 1
+MariaDB [empresa]> show tables;
++-------------------+
+| Tables_in_empresa |
++-------------------+
+| departamento      |
++-------------------+
+1 row in set (0.001 sec)
 
-#Criar tabela no banco de dados:
-Create table aluno(
-	matricula int primary key auto_increment,
-	nome varchar(30) not null,
-	idade int not null,
-	sexo enum('M','F') not null,
-	email varchar(30)
-);
+MariaDB [empresa]> select * from deepartamento;
+ERROR 1146 (42S02): Table 'empresa.deepartamento' doesn't exist
+MariaDB [empresa]> select * from departamento;
++----------------+------------+----------------+-----------+
+| idDepartamento | nome       | id_funcionario | telefone  |
++----------------+------------+----------------+-----------+
+|              1 | financeiro |              1 | 2222-3333 |
+|              2 | Compras    |              2 | 2222-4444 |
+|              3 | Rh         |              3 | 2222-5555 |
++----------------+------------+----------------+-----------+
+3 rows in set (0.153 sec)
 
+MariaDB [empresa]> create database revisao;
+Query OK, 1 row affected (0.001 sec)
 
-#Estrutura da tabela:
-desc aluno;
+MariaDB [empresa]> use revisao;
+Database changed
+MariaDB [revisao]> Create table aluno(
+    -> matricula int primary key auto-increment,
+    -> nome varchar(30) not null,
+    -> idade int not null,
+    -> sexo enum('M','F') not null,
+    -> email varchar(30)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'auto-increment,
+nome varchar(30) not null,
+idade int not null,
+sexo enum('M',...' at line 2
+MariaDB [revisao]> Create table aluno(
+    -> matricula int primary key auto_increment,
+    -> nome varchar(30) not null,
+    -> idade int not null,
+    -> sexo enum('M','F') not null,
+    -> email varchar(30)
+    -> );
+Query OK, 0 rows affected (0.142 sec)
 
-#Inserir na tabela:
-Insert into aluno values
-(null, 'angelo',20,'M','angelo@gmail.com');
-Insert into aluno values
-(null, 'thiago',16,'M','thiago@gmail.com');
-Insert into aluno values
-(null, 'ezequiel',16,'M','ezequiel@globo.com');
+MariaDB [revisao]> desc aluno;
++-----------+---------------+------+-----+---------+----------------+
+| Field     | Type          | Null | Key | Default | Extra          |
++-----------+---------------+------+-----+---------+----------------+
+| matricula | int(11)       | NO   | PRI | NULL    | auto_increment |
+| nome      | varchar(30)   | NO   |     | NULL    |                |
+| idade     | int(11)       | NO   |     | NULL    |                |
+| sexo      | enum('M','F') | NO   |     | NULL    |                |
+| email     | varchar(30)   | YES  |     | NULL    |                |
++-----------+---------------+------+-----+---------+----------------+
+5 rows in set (0.014 sec)
 
-#Visualizar todos os alunos:
-select * from aluno;
+MariaDB [revisao]> Insert into aluno values
+    -> (null, 'angelo',20,'M','angelo@gmail.com');
+Query OK, 1 row affected (0.032 sec)
 
-#Excluir aluno da tabela de aluno:
-delete from aluno where matricula = '1';
+MariaDB [revisao]> Insert into aluno values
+    -> (null, 'thiago',16,'M','thiago@gmail.com');
+Query OK, 1 row affected (0.022 sec)
 
-#Relacionamento 1 => 1:
-Um aluno poderá ter um endereço
-create table endereco(
-	idendereco int primary key auto_increment,
-	bairro varchar(30) not null,
-	cidade enum('RJ', 'SP', 'MG') not null,
-	matricula int unique,
-	foreign key(matricula)
-	references aluno(matricula)
-);
+MariaDB [revisao]> Insert into aluno values
+    -> (null, 'ezequiel',16,'M','ezequiel@globo.com');
+Query OK, 1 row affected (0.031 sec)
 
-#Inserir endereços nos alunos:
-Insert into endereco values
-(null,'Ipanema','RJ',2);
+MariaDB [revisao]> select * from aluno;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         1 | angelo   |    20 | M    | angelo@gmail.com   |
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
++-----------+----------+-------+------+--------------------+
+3 rows in set (0.000 sec)
 
+MariaDB [revisao]> delete from aluno where matricula = '1';
+Query OK, 1 row affected (0.029 sec)
 
-Insert into endereco values
-(null,'Nova Iguaçu','RJ',3);
+MariaDB [revisao]> select * from aluno;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
++-----------+----------+-------+------+--------------------+
+2 rows in set (0.000 sec)
 
+MariaDB [revisao]> Insert into aluno values
+    -> (null, 'angelo',20,'M','angelo@gmail.com');
+Query OK, 1 row affected (0.020 sec)
 
-Insert into endereco values
-(null,'Belford Roxo','RJ',4);
+MariaDB [revisao]> select * from aluno;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
+|         4 | angelo   |    20 | M    | angelo@gmail.com   |
++-----------+----------+-------+------+--------------------+
+3 rows in set (0.000 sec)
 
-#Trazer o nome e o endereço dos aluno:
-select nome, bairro from aluno A
-inner join endereco E where A.matricula = E.matricula;
+MariaDB [revisao]>  create table endereço(
+    -> idendereço int primatry key auto_increment,
+    -> bairro varchar(30) not null,
+    -> cidade enum('RJ' , 'SP' , 'MG')not null,
+    -> id_aluno int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '?o(
+idendere?o int primatry key auto_increment,
+bairro varchar(30) not null,
+...' at line 1
+MariaDB [revisao]> create table endereço(
+    -> idendereço int primatry key auto_increment,
+    -> bairro varchar(30)not null,
+    -> cidade enum('RJ' , 'SP' , 'MG')not null,
+    -> id_aluno int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '?o(
+idendere?o int primatry key auto_increment,
+bairro varchar(30)not null,
+c...' at line 1
+MariaDB [revisao]> create table endereço(
+    -> idendereco int primatry key auto_increment,
+    -> bairro varchar(30)not null,
+    -> cidade enum('RJ' , 'SP' , 'MG')not null,
+    -> matricula int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '?o(
+idendereco int primatry key auto_increment,
+bairro varchar(30)not null,
+c...' at line 1
+MariaDB [revisao]> create table endereço(
+    -> idendereco int primatry key auto_increment,
+    -> bairro varchar(30) not null,
+    -> cidade enum('RJ', 'SP', 'MG') not null,
+    -> matricula int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '?o(
+idendereco int primatry key auto_increment,
+bairro varchar(30) not null,
+...' at line 1
+MariaDB [revisao]> create table endereço(
+    -> idendereco int primary key auto_increment,
+    -> bairro varchar(30) not null,
+    -> cidade enum('RJ', 'SP', 'MG') not null,
+    -> matricula int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '?o(
+idendereco int primary key auto_increment,
+bairro varchar(30) not null,
+c...' at line 1
+MariaDB [revisao]> create table endereco(
+    -> idendereco int primary key auto_increment,
+    -> bairro varchar(30) not null,
+    -> cidade enum('RJ', 'SP', 'MG') not null,
+    -> matricula int unique,
+    -> foreign key(matricula)
+    -> references aluno(matricula)
+    -> );
+Query OK, 0 rows affected (0.229 sec)
+
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Ipanema','RJ',1);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`revisao`.`endereco`, CONSTRAINT `endereco_ibfk_1` FOREIGN KEY (`matricula`) REFERENCES `aluno` (`matricula`))
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Ipanema','RJ',2);
+Query OK, 1 row affected (0.033 sec)
+
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Praia Grande','RJ',2);
+ERROR 1062 (23000): Duplicate entry '2' for key 'matricula'
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Ipanema','RJ',2);
+ERROR 1062 (23000): Duplicate entry '2' for key 'matricula'
+MariaDB [revisao]>
+MariaDB [revisao]>
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Nova Iguaçu','RJ',3);
+Query OK, 1 row affected, 1 warning (0.059 sec)
+
+MariaDB [revisao]>
+MariaDB [revisao]>
+MariaDB [revisao]> Insert into endereco values
+    -> (null,'Belford Roxo','RJ',4);
+Query OK, 1 row affected (0.022 sec)
+
+MariaDB [revisao]> select * from aluno;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
+|         4 | angelo   |    20 | M    | angelo@gmail.com   |
++-----------+----------+-------+------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [revisao]> select * from endereco;
++------------+--------------+--------+-----------+
+| idendereco | bairro       | cidade | matricula |
++------------+--------------+--------+-----------+
+|          2 | Ipanema      | RJ     |         2 |
+|          5 | Nova Igua?u  | RJ     |         3 |
+|          6 | Belford Roxo | RJ     |         4 |
++------------+--------------+--------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [revisao]> select * from aluno where idade = 16;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
++-----------+----------+-------+------+--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [revisao]> select nome, bairro from aluno
+    -> inner join endereco;
++----------+--------------+
+| nome     | bairro       |
++----------+--------------+
+| thiago   | Ipanema      |
+| ezequiel | Ipanema      |
+| angelo   | Ipanema      |
+| thiago   | Nova Igua?u  |
+| ezequiel | Nova Igua?u  |
+| angelo   | Nova Igua?u  |
+| thiago   | Belford Roxo |
+| ezequiel | Belford Roxo |
+| angelo   | Belford Roxo |
++----------+--------------+
+9 rows in set (0.000 sec)
+
+MariaDB [revisao]> select * from aluno;
++-----------+----------+-------+------+--------------------+
+| matricula | nome     | idade | sexo | email              |
++-----------+----------+-------+------+--------------------+
+|         2 | thiago   |    16 | M    | thiago@gmail.com   |
+|         3 | ezequiel |    16 | M    | ezequiel@globo.com |
+|         4 | angelo   |    20 | M    | angelo@gmail.com   |
++-----------+----------+-------+------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [revisao]> select * from endereco;
++------------+--------------+--------+-----------+
+| idendereco | bairro       | cidade | matricula |
++------------+--------------+--------+-----------+
+|          2 | Ipanema      | RJ     |         2 |
+|          5 | Nova Igua?u  | RJ     |         3 |
+|          6 | Belford Roxo | RJ     |         4 |
++------------+--------------+--------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [revisao]> select nome, bairro from aluno A
+    -> inner join endereco E where A.matricula = E.matricula;
++----------+--------------+
+| nome     | bairro       |
++----------+--------------+
+| thiago   | Ipanema      |
+| ezequiel | Nova Igua?u  |
+| angelo   | Belford Roxo |
++----------+--------------+
+3 rows in set (0.001 sec)
+
+MariaDB [revisao]>
