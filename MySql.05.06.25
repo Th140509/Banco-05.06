@@ -1,0 +1,65 @@
+#Listar as bases existentes:
+Show databases;
+
+
+#Criar base de dados:
+Create database revisao;
+
+
+#Conectar base de dados:
+use revisao;
+
+
+#Criar tabela no banco de dados:
+Create table aluno(
+	matricula int primary key auto_increment,
+	nome varchar(30) not null,
+	idade int not null,
+	sexo enum('M','F') not null,
+	email varchar(30)
+);
+
+
+#Estrutura da tabela:
+desc aluno;
+
+#Inserir na tabela:
+Insert into aluno values
+(null, 'angelo',20,'M','angelo@gmail.com');
+Insert into aluno values
+(null, 'thiago',16,'M','thiago@gmail.com');
+Insert into aluno values
+(null, 'ezequiel',16,'M','ezequiel@globo.com');
+
+#Visualizar todos os alunos:
+select * from aluno;
+
+#Excluir aluno da tabela de aluno:
+delete from aluno where matricula = '1';
+
+#Relacionamento 1 => 1:
+Um aluno poderá ter um endereço
+create table endereco(
+	idendereco int primary key auto_increment,
+	bairro varchar(30) not null,
+	cidade enum('RJ', 'SP', 'MG') not null,
+	matricula int unique,
+	foreign key(matricula)
+	references aluno(matricula)
+);
+
+#Inserir endereços nos alunos:
+Insert into endereco values
+(null,'Ipanema','RJ',2);
+
+
+Insert into endereco values
+(null,'Nova Iguaçu','RJ',3);
+
+
+Insert into endereco values
+(null,'Belford Roxo','RJ',4);
+
+#Trazer o nome e o endereço dos aluno:
+select nome, bairro from aluno A
+inner join endereco E where A.matricula = E.matricula;
